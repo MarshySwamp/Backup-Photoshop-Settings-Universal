@@ -1,0 +1,89 @@
+/* Open Photoshop Presets & Settings Folders */
+
+#target photoshop
+
+app.bringToFront();
+
+openPresetsAndSettingsFolders();
+
+function noteOne() {
+    alert("This script will open 3 folders to facilitate backing up data before updating or migrating Photoshop.")
+}
+
+function noteTwo() {
+    alert("Script completed! Backup the following files and folders:" + "\r" + "\r" +
+        "* Actions Palette.psp file inside the User's Settings folder" + "\r" + "\r" +
+        "* All folders inside the Application's Presets folder" + "\r" + "\r" +
+        "* All folders inside the User's Presets folder")
+}
+
+function noteThree() {
+    alert("Note:" + "\r" + "In addition to backing up the Actions Palette.psp file, it is strongly recommended that each action set is saved to individual .atn action files!")
+}
+
+function openPresetsAndSettingsFolders() {
+    var os = $.os.toLowerCase().indexOf('mac') >= 0 ? "MAC" : "WINDOWS";
+    if (os === 'MAC') {
+        // alert("It's a Mac!");
+
+        noteOne();
+        noteTwo();
+        noteThree();
+
+        appSettings();
+        appPresets();
+        userPresets();
+
+        function appSettings() {
+            var appPath = app.path.fsName.replace(/^\/.+\//, '');
+            var userSettingsDir = '~/Library/Preferences/' + appPath + ' Settings';
+            var userSettingsDirOpen = Folder(userSettingsDir);
+            userSettingsDirOpen.execute();
+        }
+
+        function appPresets() {
+            var presetDir = app.path + '/Presets';
+            var presetDirOpen = Folder(presetDir);
+            presetDirOpen.execute();
+        }
+
+        function userPresets() {
+            var appPath = app.path.fsName.replace(/^\/.+\//, '');
+            var userPresetDir = '~/Library/Application Support/Adobe/' + appPath;
+            var userPresetDirOpen = Folder(userPresetDir);
+            userPresetDirOpen.execute();
+        }
+
+    } else {
+        // alert("It's Windows!");
+
+        noteOne();
+        noteTwo();
+        noteThree();
+
+        appSettings();
+        appPresets();
+        userPresets();
+
+        function appSettings() {
+            var appPath = app.path.fsName.replace(/^.+\\/, '');
+            var userSettingsDir = '~/appData/Roaming/Adobe/' + appPath + '/' + appPath + ' Settings';
+            var userSettingsDirOpen = Folder(userSettingsDir);
+            userSettingsDirOpen.execute();
+        }
+
+        function appPresets() {
+            var presetDir = app.path + '/Presets';
+            var presetDirOpen = Folder(presetDir);
+            presetDirOpen.execute();
+        }
+
+        function userPresets() {
+            var appPath = app.path.fsName.replace(/^.+\\/, '');
+            var userPresetDir = '~/appData/Roaming/Adobe/' + appPath + '/Presets';
+            var userPresetDirOpen = Folder(userPresetDir);
+            userPresetDirOpen.execute();
+        }
+
+    }
+}
